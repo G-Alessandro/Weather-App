@@ -1,6 +1,6 @@
 import './style.css';
 import searchIcon from './images/magnify.svg';
-import { weather } from './function';
+import { changeTempType, weather } from './function';
 
 const body = document.getElementsByTagName('body')[0];
 
@@ -42,10 +42,23 @@ const lastUpdated = document.createElement('div');
 lastUpdated.setAttribute('id', 'lastUpdated');
 container1.appendChild(lastUpdated);
 
+// Temperature container
+const temperatureContainer = document.createElement('div');
+container1.appendChild(temperatureContainer);
+
 const temperature = document.createElement('div');
 temperature.setAttribute('id', 'temperature');
-container1.appendChild(temperature);
+temperatureContainer.appendChild(temperature);
 
+const temperatureMax = document.createElement('div');
+temperatureMax.setAttribute('id', 'temperatureMax');
+temperatureContainer.appendChild(temperatureMax);
+
+const temperatureMin = document.createElement('div');
+temperatureMin.setAttribute('id', 'temperatureMin');
+temperatureContainer.appendChild(temperatureMin);
+
+// Form
 const form = document.createElement('form');
 container1.appendChild(form);
 
@@ -60,9 +73,15 @@ const submitBtnImg = document.createElement('img');
 submitBtnImg.src = searchIcon;
 submitBtn.appendChild(submitBtnImg);
 
+// Temperature type change button
 const temperatureChangeBtn = document.createElement('button');
 temperatureChangeBtn.setAttribute('id', 'temperatureChangeBtn');
 container1.appendChild(temperatureChangeBtn);
+
+temperatureChangeBtn.addEventListener('click', () => {
+  changeTempType();
+  weather();
+});
 
 const todayWeather = document.createElement('div');
 todayWeather.setAttribute('id', 'todayWeather');
