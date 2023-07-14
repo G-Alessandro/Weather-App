@@ -12,6 +12,94 @@ function changeTempType() {
   }
 }
 
+function removeContainerItem() {
+  const hoursToDelete = document.getElementsByClassName('forecast-hourly-container');
+  Array.from(hoursToDelete).forEach((div) => {
+    div.remove();
+  });
+  const daysToDelete = document.getElementsByClassName('forecast-days-container');
+  Array.from(daysToDelete).forEach((div) => {
+    div.remove();
+  });
+}
+
+function hourlyWeather(response) {
+  const container2 = document.getElementsByClassName('container-2')[0];
+  const forecastHourlyLength = response.forecast.forecastday[0].hour.length;
+  const d = new Date();
+  const currentHour = d.getHours();
+  console.log(currentHour);
+  for (let i = 0; i < forecastHourlyLength; i += 1) {
+    const forecastHourlyContainer = document.createElement('div');
+    forecastHourlyContainer.classList.add('forecast-hourly-container');
+    container2.appendChild(forecastHourlyContainer);
+
+    const forecastHour = document.createElement('div');
+    forecastHour.classList.add('forecast-day-title');
+    forecastHourlyContainer.appendChild(forecastHour);
+    forecastHour.innerText = response.forecast.forecastday[0].hour[i].time.slice(-5);
+
+    const forecastHourMaxTemp = document.createElement('div');
+    forecastHourMaxTemp.classList.add('forecast-day-max-temp');
+    forecastHourlyContainer.appendChild(forecastHourMaxTemp);
+    forecastHourMaxTemp.innerText = temperatureType === 'c'
+      ? `${response.forecast.forecastday[0].hour[i].temp_c} ºC`
+      : `${response.forecast.forecastday[0].hour[i].temp_f} ºF`;
+
+    const forecastHourImg = document.createElement('img');
+    forecastHourImg.classList.add('forecast-day-img');
+    forecastHourlyContainer.appendChild(forecastHourImg);
+    forecastHourImg.src = response.forecast.forecastday[0].hour[i].condition.icon;
+  }
+}
+
+// Adds seven days of weather forecast
+function sevenDaysWeather(response) {
+  const container3 = document.getElementsByClassName('container-3')[0];
+  const forecastDaysLength = response.forecast.forecastday.length;
+
+  // Adds day name to weather forecast
+  const d = new Date();
+  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const weekDay = days[d.getDay()];
+  const currentDayNumber = d.getDay();
+  let dayNumber = currentDayNumber;
+
+  for (let i = 1; i < forecastDaysLength; i += 1) {
+    dayNumber += 1;
+    if (dayNumber === 7) {
+      dayNumber = 0;
+    }
+    const forecastDayContainer = document.createElement('div');
+    forecastDayContainer.classList.add('forecast-days-container');
+    container3.appendChild(forecastDayContainer);
+
+    const forecastDayName = document.createElement('div');
+    forecastDayName.classList.add('forecast-day-title');
+    forecastDayContainer.appendChild(forecastDayName);
+    forecastDayName.innerText = days[dayNumber];
+
+    const forecastDayMaxTemp = document.createElement('div');
+    forecastDayMaxTemp.classList.add('forecast-day-max-temp');
+    forecastDayContainer.appendChild(forecastDayMaxTemp);
+    forecastDayMaxTemp.innerText = temperatureType === 'c'
+      ? `Max : ${response.forecast.forecastday[i].day.maxtemp_c} ºC`
+      : `Max : ${response.forecast.forecastday[i].day.maxtemp_f} ºF`;
+
+    const forecastDayMinTemp = document.createElement('div');
+    forecastDayMinTemp.classList.add('forecast-day-min-temp');
+    forecastDayContainer.appendChild(forecastDayMinTemp);
+    forecastDayMinTemp.innerText = temperatureType === 'c'
+      ? `Min : ${response.forecast.forecastday[i].day.mintemp_c} ºC`
+      : `Min : ${response.forecast.forecastday[i].day.mintemp_f} ºF`;
+
+    const forecastDayImg = document.createElement('img');
+    forecastDayImg.classList.add('forecast-day-img');
+    forecastDayContainer.appendChild(forecastDayImg);
+    forecastDayImg.src = response.forecast.forecastday[i].day.condition.icon;
+  }
+}
+
 function weather() {
   fetch(`http://api.weatherapi.com/v1/forecast.json?key=008478c79be54c9d8e9123022230607&q=${location}&days=8`, { mode: 'cors' })
     .then((response) => response.json())
@@ -51,53 +139,9 @@ function weather() {
         todayFeelsLike.innerText = `${response.current.feelslike_f} ºF`;
         todayWindSpeed.innerText = `${response.current.wind_mph} mph`;
       }
-
-      // Adds seven days of weather forecast
-      const container2 = document.getElementsByClassName('container-2')[0];
-      const forecastDaysLength = response.forecast.forecastday.length;
-
-      // Adds day name to weather forecast
-      const d = new Date();
-      const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-      const weekDay = days[d.getDay()];
-
-      const currentDayNumber = d.getDay();
-      let dayNumber = currentDayNumber;
-
-      for (let i = 1; i < forecastDaysLength; i += 1) {
-        dayNumber += 1;
-        if (dayNumber === 7) {
-          dayNumber = 0;
-        }
-        const forecastDayContainer = document.createElement('div');
-        forecastDayContainer.classList.add('forecast-days-container');
-        container2.appendChild(forecastDayContainer);
-
-        const forecastDayName = document.createElement('div');
-        forecastDayName.classList.add('forecast-day-title');
-        forecastDayContainer.appendChild(forecastDayName);
-        forecastDayName.innerText = days[dayNumber];
-
-        const forecastDayMaxTemp = document.createElement('div');
-        forecastDayMaxTemp.classList.add('forecast-day-max-temp');
-        forecastDayContainer.appendChild(forecastDayMaxTemp);
-        forecastDayMaxTemp.innerText = temperatureType === 'c'
-          ? `Max : ${response.forecast.forecastday[i].day.maxtemp_c} ºC`
-          : `Max : ${response.forecast.forecastday[i].day.maxtemp_f} ºF`;
-
-        const forecastDayMinTemp = document.createElement('div');
-        forecastDayMinTemp.classList.add('forecast-day-min-temp');
-        forecastDayContainer.appendChild(forecastDayMinTemp);
-        forecastDayMinTemp.innerText = temperatureType === 'c'
-          ? `Min : ${response.forecast.forecastday[i].day.mintemp_c} ºC`
-          : `Min : ${response.forecast.forecastday[i].day.mintemp_f} ºF`;
-
-        const forecastDayImg = document.createElement('img');
-        forecastDayImg.classList.add('forecast-day-img');
-        forecastDayContainer.appendChild(forecastDayImg);
-        forecastDayImg.src = response.forecast.forecastday[i].day.condition.icon;
-      }
+      hourlyWeather(response);
+      sevenDaysWeather(response);
     });
 }
 
-export { changeTempType, weather };
+export { removeContainerItem, changeTempType, weather };

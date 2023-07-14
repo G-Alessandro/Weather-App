@@ -1,19 +1,8 @@
 import './style.css';
 import searchIcon from './images/magnify.svg';
-import { changeTempType, weather } from './function';
+import { removeContainerItem, changeTempType, weather } from './function';
 
 const body = document.getElementsByTagName('body')[0];
-
-// const imgTest = document.createElement('img');
-// body.appendChild(imgTest);
-// imgTest.src = img;
-
-// fetch('http://api.weatherapi.com/v1/current.json?key=008478c79be54c9d8e9123022230607&q=guidonia', { mode: 'cors' })
-//   .then((response) => response.json())
-//   .then((response) => {
-//     // console.log(response.current.cloud);
-//     imgTest.src = response.current.condition.icon;
-//   });
 
 // Title
 const titleApp = document.createElement('div');
@@ -80,6 +69,7 @@ container1.appendChild(temperatureChangeBtn);
 
 temperatureChangeBtn.addEventListener('click', () => {
   changeTempType();
+  removeContainerItem();
   weather();
 });
 
@@ -127,10 +117,16 @@ const todayWindSpeed = document.createElement('div');
 todayWindSpeed.setAttribute('id', 'todayWindSpeed');
 todayWindSpeedContainer.appendChild(todayWindSpeed);
 
-// Container for weather forecasts for the next 7 days / 24 hours
+// Container for weather forecasts for the next 24 hours
+
 const container2 = document.createElement('div');
 container2.classList.add('container-2');
 body.appendChild(container2);
+
+// Container for weather forecasts for the next 7 days / 24 hours
+const container3 = document.createElement('div');
+container3.classList.add('container-3');
+body.appendChild(container3);
 
 weather();
 
