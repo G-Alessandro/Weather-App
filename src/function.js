@@ -1,4 +1,4 @@
-const location = 'rome';
+const location = 'guidonia';
 let temperatureType = 'c';
 
 fetch(`http://api.weatherapi.com/v1/forecast.json?key=008478c79be54c9d8e9123022230607&q=${location}&days=8`, { mode: 'cors' })
@@ -52,23 +52,23 @@ function weather() {
         todayWindSpeed.innerText = `${response.current.wind_mph} mph`;
       }
 
-      const d = new Date();
-      const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-      const weekDay = days[d.getDay()];
-
       // Adds seven days of weather forecast
       const container2 = document.getElementsByClassName('container-2')[0];
       const forecastDaysLength = response.forecast.forecastday.length;
 
-      for (let i = 1; i < forecastDaysLength; i += 1) {
-        let dayName = d.getDay() + i;
-        if (dayName > 6) {
-          dayName = 0;
-        }
-        if (dayName < 6) {
-          dayName += 1;
-        }
+      // Adds day name to weather forecast
+      const d = new Date();
+      const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const weekDay = days[d.getDay()];
 
+      const currentDayNumber = d.getDay();
+      let dayNumber = currentDayNumber;
+
+      for (let i = 1; i < forecastDaysLength; i += 1) {
+        dayNumber += 1;
+        if (dayNumber === 7) {
+          dayNumber = 0;
+        }
         const forecastDayContainer = document.createElement('div');
         forecastDayContainer.classList.add('forecast-days-container');
         container2.appendChild(forecastDayContainer);
@@ -76,7 +76,7 @@ function weather() {
         const forecastDayName = document.createElement('div');
         forecastDayName.classList.add('forecast-day-title');
         forecastDayContainer.appendChild(forecastDayName);
-        forecastDayName.innerText = days[dayName];
+        forecastDayName.innerText = days[dayNumber];
 
         const forecastDayMaxTemp = document.createElement('div');
         forecastDayMaxTemp.classList.add('forecast-day-max-temp');
