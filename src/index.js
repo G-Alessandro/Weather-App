@@ -1,5 +1,5 @@
 import './style.css';
-import searchIcon from './images/magnify.svg';
+import searchIcon from './assets/magnify.svg';
 import { removeContainerItem, changeTempType, weather } from './function';
 
 const body = document.getElementsByTagName('body')[0];

@@ -1,9 +1,12 @@
+import weatherArray from './weatherArray';
+
 const location = 'guidonia';
 let temperatureType = 'c';
 
 fetch(`http://api.weatherapi.com/v1/forecast.json?key=008478c79be54c9d8e9123022230607&q=${location}&days=8`, { mode: 'cors' })
   .then((response) => console.log(response.json()));
 
+// Function to change temperature type
 function changeTempType() {
   if (temperatureType === 'c') {
     temperatureType = 'f';
@@ -12,6 +15,7 @@ function changeTempType() {
   }
 }
 
+// Function to remove contents from container 1 and 2
 function removeContainerItem() {
   const hoursToDelete = document.getElementsByClassName('forecast-hourly-container');
   Array.from(hoursToDelete).forEach((div) => {
@@ -23,33 +27,58 @@ function removeContainerItem() {
   });
 }
 
+// Function to find object index in weatherArray
+function findCode(code) {
+  const objectIndex = weatherArray.findIndex((obj) => obj.code === code);
+  return objectIndex;
+}
+
+// Function to find SVG in assets folder
+function importImage(imagePath) {
+  return require(`./${imagePath}`);
+}
+
+
+
+// Function to see the weather during the hours of the day
 function hourlyWeather(response) {
   const container2 = document.getElementsByClassName('container-2')[0];
   const forecastHourlyLength = response.forecast.forecastday[0].hour.length;
+
   const d = new Date();
   const currentHour = d.getHours();
+  const sunriseHour = response.forecast.forecastday[0].astro.sunrise;
+  const sunsetHour = response.forecast.forecastday[0].astro.sunset;
+  console.log(sunriseHour);
+  console.log(sunsetHour);
   console.log(currentHour);
+
   for (let i = 0; i < forecastHourlyLength; i += 1) {
     const forecastHourlyContainer = document.createElement('div');
     forecastHourlyContainer.classList.add('forecast-hourly-container');
     container2.appendChild(forecastHourlyContainer);
 
     const forecastHour = document.createElement('div');
-    forecastHour.classList.add('forecast-day-title');
+    forecastHour.classList.add('forecast-hour');
     forecastHourlyContainer.appendChild(forecastHour);
     forecastHour.innerText = response.forecast.forecastday[0].hour[i].time.slice(-5);
 
     const forecastHourMaxTemp = document.createElement('div');
-    forecastHourMaxTemp.classList.add('forecast-day-max-temp');
+    forecastHourMaxTemp.classList.add('forecast-hour-max-temp');
     forecastHourlyContainer.appendChild(forecastHourMaxTemp);
     forecastHourMaxTemp.innerText = temperatureType === 'c'
       ? `${response.forecast.forecastday[0].hour[i].temp_c} ºC`
       : `${response.forecast.forecastday[0].hour[i].temp_f} ºF`;
 
     const forecastHourImg = document.createElement('img');
-    forecastHourImg.classList.add('forecast-day-img');
+    forecastHourImg.classList.add('forecast-hour-img');
     forecastHourlyContainer.appendChild(forecastHourImg);
-    forecastHourImg.src = response.forecast.forecastday[0].hour[i].condition.icon;
+
+    const weatherCode = response.forecast.forecastday[0].hour[i].condition.code;
+    findCode(weatherCode);
+    console.log(findCode(weatherCode));
+    const imagePath = `assets/weather-icons/${weatherArray[findCode(weatherCode)].dayIcon}`;
+    forecastHourImg.src = importImage(imagePath);
   }
 }
 
@@ -125,7 +154,6 @@ function weather() {
       todayWeatherImg.src = response.current.condition.icon;
       todayHumidity.innerText = `${response.current.humidity} %`;
 
-      // Change to farenaith
       if (temperatureType === 'c') {
         temperature.innerText = `${response.current.temp_c} ºC`;
         temperatureMax.innerText = `Max : ${response.forecast.forecastday[0].day.maxtemp_c} ºC`;
