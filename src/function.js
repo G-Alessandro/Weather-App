@@ -38,7 +38,21 @@ function importImage(imagePath) {
   return require(`./${imagePath}`);
 }
 
+// Function to convert 12 Hour format to 24
+function convertTo24Hour(time12h) {
+  const [time, period] = time12h.split(' ');
+  let [hours, minutes] = time.split(':');
 
+  hours = parseInt(hours);
+
+  if (period === 'PM' && hours !== 12) {
+    hours += 12;
+  } else if (period === 'AM' && hours === 12) {
+    hours = 0;
+  }
+
+  return `${hours.toString().padStart(2, '0')}:${minutes}`;
+}
 
 // Function to see the weather during the hours of the day
 function hourlyWeather(response) {
@@ -47,10 +61,12 @@ function hourlyWeather(response) {
 
   const d = new Date();
   const currentHour = d.getHours();
-  const sunriseHour = response.forecast.forecastday[0].astro.sunrise;
-  const sunsetHour = response.forecast.forecastday[0].astro.sunset;
-  console.log(sunriseHour);
-  console.log(sunsetHour);
+
+  let sunriseHour = convertTo24Hour(response.forecast.forecastday[0].astro.sunrise).slice(0, 2);
+  let sunsetHour = convertTo24Hour(response.forecast.forecastday[0].astro.sunset).slice(0, 2);
+  sunriseHour = Number(sunriseHour);
+  sunsetHour = Number(sunsetHour);
+
   console.log(currentHour);
 
   for (let i = 0; i < forecastHourlyLength; i += 1) {
@@ -74,10 +90,18 @@ function hourlyWeather(response) {
     forecastHourImg.classList.add('forecast-hour-img');
     forecastHourlyContainer.appendChild(forecastHourImg);
 
+    // Convert the first two numbers of the forecast time to a number
+    const forecastHourNumber = Number(response.forecast.forecastday[0].hour[i].time.slice(-5, -3));
+
+    // Look for the key code in weatherArray
     const weatherCode = response.forecast.forecastday[0].hour[i].condition.code;
     findCode(weatherCode);
-    console.log(findCode(weatherCode));
-    const imagePath = `assets/weather-icons/${weatherArray[findCode(weatherCode)].dayIcon}`;
+    
+    // Change the image based on what time it is
+    let imagePath = `assets/weather-icons/${weatherArray[findCode(weatherCode)].dayIcon}`;
+    if (forecastHourNumber < sunriseHour || forecastHourNumber >= sunsetHour) {
+      imagePath = `assets/weather-icons/${weatherArray[findCode(weatherCode)].nightIcon}`;
+    }
     forecastHourImg.src = importImage(imagePath);
   }
 }
