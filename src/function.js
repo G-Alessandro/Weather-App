@@ -1,6 +1,6 @@
 import weatherArray from './weatherArray';
 
-const location = 'guidonia';
+// const location = 'guidonia';
 let temperatureType = 'c';
 
 fetch(`http://api.weatherapi.com/v1/forecast.json?key=008478c79be54c9d8e9123022230607&q=${location}&days=8`, { mode: 'cors' })
@@ -163,7 +163,7 @@ function sevenDaysWeather(response) {
   }
 }
 
-function weather() {
+function weather(location) {
   fetch(`http://api.weatherapi.com/v1/forecast.json?key=008478c79be54c9d8e9123022230607&q=${location}&days=8`, { mode: 'cors' })
     .then((response) => response.json())
     .then((response) => {
@@ -185,8 +185,11 @@ function weather() {
       locationCountry.innerText = response.location.country;
       lastUpdated.innerText = response.current.last_updated;
       todayWeather.innerText = response.current.condition.text;
-      todayWeatherImg.src = response.current.condition.icon;
       todayHumidity.innerText = `${response.current.humidity} %`;
+
+      const weatherCode = response.forecast.forecastday[0].day.condition.code;
+      const imagePath = `assets/weather-icons/${weatherArray[findCode(weatherCode)].dayIcon}`;
+      todayWeatherImg.src = importImage(imagePath);
 
       if (temperatureType === 'c') {
         temperature.innerText = `${response.current.temp_c} ºC`;

@@ -57,10 +57,20 @@ inputLocation.setAttribute('placeholder', 'Enter City Name');
 form.appendChild(inputLocation);
 
 const submitBtn = document.createElement('button');
+submitBtn.setAttribute('type', 'submit');
 form.appendChild(submitBtn);
+
 const submitBtnImg = document.createElement('img');
+submitBtnImg.classList.add('submit-btn-img');
 submitBtnImg.src = searchIcon;
 submitBtn.appendChild(submitBtnImg);
+
+form.addEventListener('submit', (e) => {
+  const inputValue = inputLocation.value;
+  removeContainerItem();
+  weather(inputValue);
+  e.preventDefault();
+});
 
 // Temperature type change button
 const temperatureChangeBtn = document.createElement('button');
@@ -128,6 +138,6 @@ const container3 = document.createElement('div');
 container3.classList.add('container-3');
 body.appendChild(container3);
 
-weather();
+weather('guidonia');
 
 console.log('test');
