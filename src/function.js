@@ -57,20 +57,20 @@ function convertTo24Hour(time12h) {
 // Function to see the weather during the hours of the day
 function hourlyWeather(response) {
   const container2 = document.getElementsByClassName('container-2')[0];
-  let forecastHourlyLength = response.forecast.forecastday[0].hour.length;
+  const forecastHourlyLength = response.forecast.forecastday[0].hour.length;
 
   const d = new Date();
   const currentHour = d.getHours();
-
   let sunriseHour = convertTo24Hour(response.forecast.forecastday[0].astro.sunrise).slice(0, 2);
   let sunsetHour = convertTo24Hour(response.forecast.forecastday[0].astro.sunset).slice(0, 2);
   sunriseHour = Number(sunriseHour);
   sunsetHour = Number(sunsetHour);
 
-  let remainingHours = 24 - currentHour;
+  const remainingHours = 24 - (24 - currentHour);
+  let totalHours = forecastHourlyLength;
   let dayIndex = 0;
 
-  for (let i = currentHour; i < forecastHourlyLength; i += 1) {
+  for (let i = currentHour; i < totalHours; i += 1) {
     const forecastHourlyContainer = document.createElement('div');
     forecastHourlyContainer.classList.add('forecast-hourly-container');
     container2.appendChild(forecastHourlyContainer);
@@ -109,7 +109,7 @@ function hourlyWeather(response) {
     if (i === 23) {
       dayIndex = 1;
       i = -1;
-      forecastHourlyLength = remainingHours;
+      totalHours = remainingHours;
     }
   }
 }
