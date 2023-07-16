@@ -57,7 +57,7 @@ function convertTo24Hour(time12h) {
 // Function to see the weather during the hours of the day
 function hourlyWeather(response) {
   const container2 = document.getElementsByClassName('container-2')[0];
-  const forecastHourlyLength = response.forecast.forecastday[0].hour.length;
+  let forecastHourlyLength = response.forecast.forecastday[0].hour.length;
 
   const d = new Date();
   const currentHour = d.getHours();
@@ -67,9 +67,10 @@ function hourlyWeather(response) {
   sunriseHour = Number(sunriseHour);
   sunsetHour = Number(sunsetHour);
 
-  console.log(currentHour);
+  let remainingHours = 24 - currentHour;
+  let dayIndex = 0;
 
-  for (let i = 0; i < forecastHourlyLength; i += 1) {
+  for (let i = currentHour; i < forecastHourlyLength; i += 1) {
     const forecastHourlyContainer = document.createElement('div');
     forecastHourlyContainer.classList.add('forecast-hourly-container');
     container2.appendChild(forecastHourlyContainer);
@@ -77,32 +78,39 @@ function hourlyWeather(response) {
     const forecastHour = document.createElement('div');
     forecastHour.classList.add('forecast-hour');
     forecastHourlyContainer.appendChild(forecastHour);
-    forecastHour.innerText = response.forecast.forecastday[0].hour[i].time.slice(-5);
+    forecastHour.innerText = response.forecast.forecastday[dayIndex].hour[i].time.slice(-5);
 
     const forecastHourMaxTemp = document.createElement('div');
     forecastHourMaxTemp.classList.add('forecast-hour-max-temp');
     forecastHourlyContainer.appendChild(forecastHourMaxTemp);
     forecastHourMaxTemp.innerText = temperatureType === 'c'
-      ? `${response.forecast.forecastday[0].hour[i].temp_c} ºC`
-      : `${response.forecast.forecastday[0].hour[i].temp_f} ºF`;
+      ? `${response.forecast.forecastday[dayIndex].hour[i].temp_c} ºC`
+      : `${response.forecast.forecastday[dayIndex].hour[i].temp_f} ºF`;
 
     const forecastHourImg = document.createElement('img');
     forecastHourImg.classList.add('forecast-hour-img');
     forecastHourlyContainer.appendChild(forecastHourImg);
 
     // Convert the first two numbers of the forecast time to a number
-    const forecastHourNumber = Number(response.forecast.forecastday[0].hour[i].time.slice(-5, -3));
+    const forecastHourSlice = response.forecast.forecastday[dayIndex].hour[i].time.slice(-5, -3);
+    const forecastHourNumber = Number(forecastHourSlice);
 
     // Look for the key code in weatherArray
-    const weatherCode = response.forecast.forecastday[0].hour[i].condition.code;
-    findCode(weatherCode);
-    
+    const weatherCode = response.forecast.forecastday[dayIndex].hour[i].condition.code;
+
     // Change the image based on what time it is
     let imagePath = `assets/weather-icons/${weatherArray[findCode(weatherCode)].dayIcon}`;
     if (forecastHourNumber < sunriseHour || forecastHourNumber >= sunsetHour) {
       imagePath = `assets/weather-icons/${weatherArray[findCode(weatherCode)].nightIcon}`;
     }
     forecastHourImg.src = importImage(imagePath);
+
+    // It is used to see the weather after 23:00
+    if (i === 23) {
+      dayIndex = 1;
+      i = -1;
+      forecastHourlyLength = remainingHours;
+    }
   }
 }
 
@@ -149,7 +157,9 @@ function sevenDaysWeather(response) {
     const forecastDayImg = document.createElement('img');
     forecastDayImg.classList.add('forecast-day-img');
     forecastDayContainer.appendChild(forecastDayImg);
-    forecastDayImg.src = response.forecast.forecastday[i].day.condition.icon;
+    const weatherCode = response.forecast.forecastday[i].day.condition.code;
+    const imagePath = `assets/weather-icons/${weatherArray[findCode(weatherCode)].dayIcon}`;
+    forecastDayImg.src = importImage(imagePath);
   }
 }
 
