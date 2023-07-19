@@ -180,8 +180,8 @@ function weather(location) {
       const todayHumidity = document.getElementById('todayHumidity');
       const todayWindSpeed = document.getElementById('todayWindSpeed');
 
-      locationName.innerText = response.location.name;
-      locationRegion.innerText = response.location.region;
+      locationName.innerText = `${response.location.name},`;
+      locationRegion.innerText = `${response.location.region},`;
       locationCountry.innerText = response.location.country;
       lastUpdated.innerText = response.current.last_updated;
       todayWeather.innerText = response.current.condition.text;
