@@ -202,7 +202,7 @@ function weatherInfo(response) {
 
 function weatherFetch(location) {
   const inputError = document.getElementsByClassName('input-error')[0];
-  fetch(`http://api.weatherapi.com/v1/forecast.json?key=008478c79be54c9d8e9123022230607&q=${location}&days=8`, { mode: 'cors' })
+  fetch(`https://api.weatherapi.com/v1/forecast.json?key=008478c79be54c9d8e9123022230607&q=${location}&days=8`)
     .then((response) => response.json())
     .then((response) => {
       weatherInfo(response);
