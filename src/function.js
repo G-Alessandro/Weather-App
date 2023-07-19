@@ -1,10 +1,6 @@
 import weatherArray from './weatherArray';
 
-// const location = 'guidonia';
 let temperatureType = 'c';
-
-fetch(`http://api.weatherapi.com/v1/forecast.json?key=008478c79be54c9d8e9123022230607&q=${location}&days=8`, { mode: 'cors' })
-  .then((response) => console.log(response.json()));
 
 // Function to change temperature type
 function changeTempType() {
@@ -56,7 +52,7 @@ function convertTo24Hour(time12h) {
 
 // Function to see the weather during the hours of the day
 function hourlyWeather(response) {
-  const container2 = document.getElementsByClassName('container-2')[0];
+  const container3 = document.getElementsByClassName('container-3')[0];
   const forecastHourlyLength = response.forecast.forecastday[0].hour.length;
 
   const d = new Date();
@@ -73,7 +69,7 @@ function hourlyWeather(response) {
   for (let i = currentHour; i < totalHours; i += 1) {
     const forecastHourlyContainer = document.createElement('div');
     forecastHourlyContainer.classList.add('forecast-hourly-container');
-    container2.appendChild(forecastHourlyContainer);
+    container3.appendChild(forecastHourlyContainer);
 
     const forecastHour = document.createElement('div');
     forecastHour.classList.add('forecast-hour');
@@ -116,13 +112,12 @@ function hourlyWeather(response) {
 
 // Adds seven days of weather forecast
 function sevenDaysWeather(response) {
-  const container3 = document.getElementsByClassName('container-3')[0];
+  const container2 = document.getElementsByClassName('container-2')[0];
   const forecastDaysLength = response.forecast.forecastday.length;
 
   // Adds day name to weather forecast
   const d = new Date();
   const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  const weekDay = days[d.getDay()];
   const currentDayNumber = d.getDay();
   let dayNumber = currentDayNumber;
 
@@ -133,7 +128,7 @@ function sevenDaysWeather(response) {
     }
     const forecastDayContainer = document.createElement('div');
     forecastDayContainer.classList.add('forecast-days-container');
-    container3.appendChild(forecastDayContainer);
+    container2.appendChild(forecastDayContainer);
 
     const forecastDayName = document.createElement('div');
     forecastDayName.classList.add('forecast-day-title');

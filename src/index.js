@@ -8,15 +8,19 @@ import { removeContainerItem, changeTempType, weather } from './function';
 const body = document.getElementsByTagName('body')[0];
 
 // Title
-// const titleApp = document.createElement('div');
-// titleApp.classList.add('title-app');
-// titleApp.innerText = 'WEATHER APP';
-// body.appendChild(titleApp);
+const titleApp = document.createElement('div');
+titleApp.classList.add('title-app');
+titleApp.innerText = 'WEATHER APP';
+body.appendChild(titleApp);
+
+const containerAll = document.createElement('div');
+containerAll.classList.add('container-all');
+body.appendChild(containerAll);
 
 // Container for weather of the day
 const container1 = document.createElement('div');
 container1.classList.add('container-1');
-body.appendChild(container1);
+containerAll.appendChild(container1);
 
 // Container Info
 const containerInfo = document.createElement('div');
@@ -233,15 +237,35 @@ form.addEventListener('submit', (e) => {
   e.preventDefault();
 });
 
+// Container for container2 and container 3
+const containerForecast = document.createElement('div');
+containerForecast.classList.add('container-forecast');
+containerAll.appendChild(containerForecast);
+
 // Container for weather forecasts for the next 24 hours
 const container2 = document.createElement('div');
 container2.classList.add('container-2');
-body.appendChild(container2);
+containerForecast.appendChild(container2);
 
 // Container for weather forecasts for the next 7 days / 24 hours
 const container3 = document.createElement('div');
 container3.classList.add('container-3');
-body.appendChild(container3);
+containerForecast.appendChild(container3);
+
+// Animated weather icons and Background credit
+const svgCredit = document.createElement('a');
+svgCredit.classList.add('svg-credit');
+svgCredit.setAttribute('target', '_blank');
+svgCredit.setAttribute('href', 'https://github.com/basmilius/weather-icons/tree/dev');
+svgCredit.innerText = 'Weather icons by basmilius';
+body.appendChild(svgCredit);
+
+const backgroundCredit = document.createElement('a');
+backgroundCredit.classList.add('background-credit');
+backgroundCredit.setAttribute('target', '_blank');
+backgroundCredit.setAttribute('href', 'https://www.freepik.com/free-vector/sky-background-video-conferencing_9427922.htm#query=weather%20cartoon%20background%20animated&position=42&from_view=search&track=ais');
+backgroundCredit.innerText = 'Background image by Freepik';
+body.appendChild(backgroundCredit);
 
 weather(location);
 

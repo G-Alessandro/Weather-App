@@ -14,10 +14,22 @@ body {
   background-size: 100%;
 }
 
+.title-app {
+  font-size: 4rem;
+  color: white;
+  margin-top: 1rem;
+  text-shadow: 0px 0px 2px black;
+}
+
+.container-all {
+  display: flex;
+  margin-top: 2rem;
+}
+
 .container-1 {
+  height: 25rem;
   display: flex;
   flex-direction: column;
-  background-color: white;
   padding: 1rem;
 }
 
@@ -192,37 +204,102 @@ input[type=text]:focus {
 
 button[type=submit] {
   cursor: pointer;
-  background-color: white;
   border: none;
   border-bottom: .1rem solid;
 }
 
+.container-forecast {
+  width: 65rem;
+  font-size: 1.2rem;
+  margin-left: .5rem;
+}
+
 .container-2 {
-  width: 60rem;
+  height: 11rem;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  column-gap: 1rem;
+  padding: 1rem;
+}
+
+.forecast-days-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.forecast-day-title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.container-3 {
+  height: 11rem;
   display: grid;
   grid-template-columns: repeat(24, 1fr);
   column-gap: 1rem;
-  background-color: red;
   padding: 1rem;
   overflow-x: scroll;
+  margin-top: 1rem;
 }
 
 .forecast-hourly-container {
   display: flex;
   flex-direction: column;
-  width: 8rem;
-  color: white;
-  font-size: 1.5rem;
+  align-items: center;
 }
 
-.container-3 {
-  width: 60rem;
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  background-color: blueviolet;
+.forecast-hour {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Scrollbar */
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.692);
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #2a97ff;
+  border-radius: 10px;
+  border: 2px solid white;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #0987fd;
 }
 
 img {
   width: 5rem;
   height: 5rem;
+}
+
+.container-1,
+.container-2,
+.container-3 {
+  background-color: rgba(255, 255, 255, 0.692);
+  border-radius: 10px;
+}
+
+input[type=text],
+button[type=submit] {
+  background-color: rgba(255, 255, 255, 0);
+}
+
+.svg-credit {
+  margin-top: 2rem;
+}
+
+.background-credit {
+  margin-top: .5rem;
 }
