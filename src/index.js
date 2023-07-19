@@ -3,7 +3,7 @@ import searchIcon from './assets/magnify.svg';
 import thermometer from './assets/weather-icons/thermometer.svg';
 import humidity from './assets/weather-icons/humidity.svg';
 import wind from './assets/weather-icons/wind.svg';
-import { removeContainerItem, changeTempType, weather } from './function';
+import { removeContainerItem, changeTempType, weatherFetch } from './function';
 
 const body = document.getElementsByTagName('body')[0];
 
@@ -209,15 +209,21 @@ let location = 'Guidonia';
 temperatureChangeInput.addEventListener('click', () => {
   changeTempType();
   removeContainerItem();
-  weather(location);
+  weatherFetch(location);
 });
 
 // Form
 const form = document.createElement('form');
 inputBtnContainer.appendChild(form);
 
+const inputError = document.createElement('div');
+inputError.classList.add('input-error', 'hidden');
+inputError.innerText = 'Location not found';
+form.appendChild(inputError);
+
 const inputLocation = document.createElement('input');
 inputLocation.setAttribute('type', 'text');
+inputLocation.setAttribute('required', '');
 inputLocation.setAttribute('placeholder', 'Search Location');
 form.appendChild(inputLocation);
 
@@ -233,7 +239,7 @@ submitBtn.appendChild(submitBtnImg);
 form.addEventListener('submit', (e) => {
   location = inputLocation.value;
   removeContainerItem();
-  weather(location);
+  weatherFetch(location);
   e.preventDefault();
 });
 
@@ -252,7 +258,7 @@ const container3 = document.createElement('div');
 container3.classList.add('container-3');
 containerForecast.appendChild(container3);
 
-// Animated weather icons and Background credit
+// Animated weather icons , Background and WeatherAPI credit
 const svgCredit = document.createElement('a');
 svgCredit.classList.add('svg-credit');
 svgCredit.setAttribute('target', '_blank');
@@ -267,6 +273,13 @@ backgroundCredit.setAttribute('href', 'https://www.freepik.com/free-vector/sky-b
 backgroundCredit.innerText = 'Background image by Freepik';
 body.appendChild(backgroundCredit);
 
-weather(location);
+const weatherApiCredit = document.createElement('a');
+weatherApiCredit.classList.add('weatherApi-credit');
+weatherApiCredit.setAttribute('target', '_blank');
+weatherApiCredit.setAttribute('href', 'https://www.weatherapi.com/');
+weatherApiCredit.innerText = 'Powered by WeatherAPI.com';
+body.appendChild(weatherApiCredit);
+
+weatherFetch(location);
 
 console.log('test');

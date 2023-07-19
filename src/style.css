@@ -106,12 +106,12 @@ body {
 }
 
 .title {
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   margin-top: 1rem;
 }
 
 .result {
-  font-size: 2rem;
+  font-size: 1.8rem;
 }
 
 .submit-btn-img {
@@ -183,6 +183,7 @@ body {
 }
 
 form {
+  position: relative;
   display: flex;
   align-items: flex-end;
 }
@@ -195,6 +196,21 @@ input[type=text] {
   border-bottom: .1rem solid;
   font-size: 1.2rem;
   text-indent: 1.1rem;
+}
+
+.input-error {
+  position: absolute;
+  color: white;
+  bottom: 3rem;
+  left: .5rem;
+  font-size: 1.2rem;
+  background-color: rgb(254, 82, 82);
+  padding: .5rem;
+  border-radius: 10px;
+}
+
+.hidden {
+  visibility: hidden;
 }
 
 input[type=text]:focus {
@@ -263,7 +279,7 @@ button[type=submit] {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.692);
+  background: rgba(255, 255, 255, 0);
   border-radius: 10px;
 }
 
@@ -301,5 +317,9 @@ button[type=submit] {
 }
 
 .background-credit {
+  margin-top: .5rem;
+}
+
+.weatherApi-credit {
   margin-top: .5rem;
 }
