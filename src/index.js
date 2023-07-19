@@ -281,5 +281,3 @@ weatherApiCredit.innerText = 'Powered by WeatherAPI.com';
 body.appendChild(weatherApiCredit);
 
 weatherFetch(location);
-
-console.log('test');
