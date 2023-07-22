@@ -1,7 +1,7 @@
 # Weather-App
 <p>Weather-App built to practice using promises and APIs.</p>
 <a href="https://g-alessandro.github.io/Weather-App/" target="_blank">Live preview</a>
-<p>The Weather-App only shows 2 days plus the current day, because the account used for the weatherAPI has been upgraded to the free tier.</p>
+<p>The Weather-App only shows two days of weather forecast plus the current day, because the account used for the weatherAPI has been upgraded to the free tier.</p>
 
 <h2>Things I've learned:</h2>
 
